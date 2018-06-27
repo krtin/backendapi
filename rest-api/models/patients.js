@@ -1,5 +1,3 @@
-//var mongoose = require('mongoose');
-//var Schema = mongoose.Schema;
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
@@ -39,13 +37,13 @@ PatientsSchema.pre('save', function(next) {
 
 //function for validating date to mm-dd-yy or mm/dd/yyyy
 //since it wasn't mentioned I assumed this
-date_format_checker = function(v) {
+var date_format_checker = function(v) {
   var dateRegex = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/
   return dateRegex.test(v);
 }
 
 //I assumed sex format to be either m or f
-sex_format_checker = function(v) {
+var sex_format_checker = function(v) {
   if(v.toLowerCase()=='m' || v.toLowerCase()=='f') {
     return true
   }
@@ -60,10 +58,9 @@ var email_format_checker = function(v) {
   return emailRegex.test(v.toLowerCase());
 };
 
-//adding the vaidation using function definitions above
+//adding the validation
 PatientsSchema.path('email').validate(email_format_checker, 'Email `{VALUE}` is incorrectly formatted', 'format');
 PatientsSchema.path('birthdate').validate(date_format_checker, 'Birth Date `{VALUE}` is incorrectly formatted', 'format');
 PatientsSchema.path('sex').validate(sex_format_checker, 'Sex `{VALUE}` is incorrectly formatted', 'format');
 
-//Exports the PatientSchema
 module.exports = mongoose.model('Patients', PatientsSchema);
